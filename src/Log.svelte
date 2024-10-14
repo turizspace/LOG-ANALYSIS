@@ -26,13 +26,25 @@
   }
 
   function parseLogEntry(entry) {
-    const ip = entry.match(/^\d+\.\d+\.\d+\.\d+/)[0];
-    const dateTimeStr = entry.match(/\[(.*?)\]/)[1];
-    const userAgent = entry.match(/"([^"]+)"$/)[1];
-    const referer = entry.match(/"([^"]+)" "[^"]+"$/)?.[1] || 'None';
+    // Match IP
+    const ipMatch = entry.match(/^\d+\.\d+\.\d+\.\d+/);
+    const ip = ipMatch ? ipMatch[0] : 'Unknown IP';
+
+    // Match date and time
+    const dateTimeMatch = entry.match(/\[(.*?)\]/);
+    const dateTimeStr = dateTimeMatch ? dateTimeMatch[1] : 'Unknown Time';
+
+    // Match user agent
+    const userAgentMatch = entry.match(/"([^"]+)"$/);
+    const userAgent = userAgentMatch ? userAgentMatch[1] : 'Unknown User Agent';
+
+    // Match referer (optional)
+    const refererMatch = entry.match(/"([^"]+)" "[^"]+"$/);
+    const referer = refererMatch ? refererMatch[1] : 'None';
 
     return { ip, dateTimeStr, userAgent, referer };
   }
+
 
   function parseUserAgent(userAgent) {
     const parser = new UAParser(userAgent);
